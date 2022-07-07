@@ -82,7 +82,11 @@ describe('total likes', () => {
 describe('favorite blog', () => {
     test('when list has multiple blogs and the favorite blogs is rigth', () => {
         const result = listHelper.favoriteBlog(blogs)
-        expect(result).toEqual(blogs[2])
+        expect(result).toEqual({
+            title: "Canonical string reduction",
+            author: "Edsger W. Dijkstra",
+            likes: 12
+        })
     })
 
     test('when list is empty', () => {
@@ -92,7 +96,11 @@ describe('favorite blog', () => {
 
     test('when list has one blog', () => {
         const result = listHelper.favoriteBlog([blogs[0]])
-        expect(result).toEqual(blogs[0])
+        expect(result).toEqual({
+            title: "React patterns",
+            author: "Michael Chan",
+            likes: 7,
+        })
     })
 
 })

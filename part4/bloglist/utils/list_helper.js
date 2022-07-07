@@ -21,9 +21,15 @@ const favoriteBlog = (blogs) => {
             return a
         return b
     }
-    return blogs.length === 0
-        ? {}
-        : blogs.reduce(reducer, 0)
+    if (blogs.length === 0){
+        return {}
+    }
+        
+    const result = blogs.reduce(reducer, 0)
+    delete result._id
+    delete result.__v
+    delete result.url
+    return result
 }
 
 const mostBlogs = (blogs) => {
