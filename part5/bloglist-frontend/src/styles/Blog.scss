@@ -1,0 +1,38 @@
+.blog{
+    border: none;
+}
+
+.likes-button{
+    padding: 0 .25em;
+    margin-left: .5rem;
+    font-size: .9rem;
+}
+
+.likes-container{
+    display: flex;  
+    gap: 16px;
+    align-items: center;
+}
+
+.form-comment{
+    background-color: var(--color-bg-white);
+    padding: 0;
+}
+
+input[type=text]{
+    background-color: #fff;
+    margin-left: 0;
+}
+
+ul.blog-blogs{
+    list-style: none;
+    padding-left: 0;
+}
+
+li{
+    padding: 1em;
+    background-color: #fff;
+    margin-bottom: .5rem;
+    border: 1px solid var(--color-text);
+}
+

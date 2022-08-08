@@ -1,60 +1,90 @@
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import {
+  likeBlog,
+  initializeBlogs,
+  createComment,
+} from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
+import '../styles/Blog.scss'
 
-const Blog = ({ blog, updateLikes, deleteBlog }) => {
-  const [visible, setVisible] = useState(false)
-
-  const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = { display: visible ? '' : 'none' }
-  const [liked, setLiked] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
-
-  const toggleVisibility = () => {
-    setVisible(!visible)
-  }
-
-  const likedButton = () => {
-    setLikes(likes + 1)
-    setLiked(true)
-  }
+const Blog = () => {
+  const [comment, setComment] = useState('')
+  const dispatch = useDispatch()
+  const id = useParams().id
+  const blogs = useSelector((state) => state.blog)
+  const blog = blogs.find((blog) => blog.id === id)
 
   useEffect(() => {
-    if (liked) {
-      const updateObject = { ...blog, likes }
-      updateLikes(updateObject)
-      setLiked(false)
-    }
-  }, [likes, blog, updateLikes, liked])
+    dispatch(initializeBlogs())
+  }, [])
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
+  if (!blog) {
+    return null
   }
+
+  // const removeBlog = () => {
+  //   if (window.confirm(`Remove ${blog.title}`)) {
+  //     try {
+  //       dispatch(deleteBlog(blog))
+  //       dispatch(setNotification(`Deleted ${blog.title}`, 5, false))
+  //     } catch (event) {
+  //       dispatch(setNotification('User invalid', 5, true))
+  //     }
+  //   }
+  // }
+
+  const updateLikes = () => {
+    try {
+      dispatch(likeBlog(blog))
+    } catch (event) {
+      dispatch(setNotification('error in like button', 5, true))
+    }
+  }
+
+  const addComment = (event) => {
+    event.preventDefault()
+    dispatch(createComment({ text: comment }, id))
+    setComment('')
+  }
+
   return (
     <div className="blog">
-      <div style={hideWhenVisible}>
-        <div style={blogStyle} className="blog-default">
-          <p>
-            {blog.title} - {blog.author}{' '}
-            <button onClick={toggleVisibility}>show</button>{' '}
+      <div>
+        <h2>
+          {blog.title} - {blog.author}
+        </h2>
+        <p>{blog.url}</p>
+        <div className="likes-container">
+          <p className="likes-value">
+            {blog.likes}
+            <button className="likes-button" onClick={updateLikes}>
+              like
+            </button>
           </p>
         </div>
-      </div>
-      <div style={showWhenVisible}>
-        <div style={blogStyle}>
-          <p>
-            {blog.title} - {blog.author}{' '}
-            <button onClick={toggleVisibility}>hide</button>{' '}
-          </p>
-          <p>{blog.url}</p>
-          <p className='likes-value'>
-            {blog.likes} <button className='likes' onClick={likedButton}>like</button>{' '}
-          </p>
-          <p>{blog.user.name}</p>
-          <button onClick={() => deleteBlog(blog)}> remove </button>
-        </div>
+        <p> added by {blog.user.name}</p>
+        <h3> comments </h3>
+        <form onSubmit={addComment} className="form-comment">
+          <input
+            type="text"
+            value={comment}
+            name="Comment"
+            onChange={({ target }) => setComment(target.value)}
+            id="comment"
+          />
+          <button id="comment-button" type="submit">
+            add comment
+          </button>
+        </form>
+        {blog.comments ? (
+          <ul className="blog-blogs">
+            {blog.comments.map((comment) => (
+              <li key={comment.id}>{comment.text}</li>
+            ))}
+          </ul>
+        ) : null}
       </div>
     </div>
   )

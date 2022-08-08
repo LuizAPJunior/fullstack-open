@@ -1,0 +1,23 @@
+.login{
+    background-color: #fff;
+    padding: 1em;
+    border-radius: 7px;
+}
+
+#username{
+    background-color: var(--color-bg-white);
+}
+
+.login-button{
+    align-items: center;
+    display: inline-flex;
+    cursor: pointer;
+    border-radius: 3px;
+    border: none;
+    justify-content: center;
+    padding: 4px 16px;
+    background-color: var(--color-text);
+    color: var(--color-bg-white);
+    min-width: 100px;
+    width: 100%;
+}
