@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/patients/
+Content-Type: application/json
+
+
+{
+        "name": "Paulo Baric",
+        "dateOfBirth": "1985-05-05",
+        "ssn": "250470-556L",
+        "gender": "non binary",
+        "occupation": "Football Player"
+}
